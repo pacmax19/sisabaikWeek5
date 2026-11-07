@@ -17,7 +17,7 @@ export function buatDataLatihan(waktu = Date.now()) {
     stok,
     satuan,
     status,
-    selisihJam
+    selisihJam,
   ) => ({
     id: String(id),
     penyediaId: String(penyediaId),
@@ -32,7 +32,6 @@ export function buatDataLatihan(waktu = Date.now()) {
     berakhirPada: new Date(waktu + selisihJam * jam).toISOString(),
     dibuatPada,
   });
-
   return [
     buat(
       1,
@@ -45,7 +44,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       6,
       "paket",
       "aktif",
-      24
+      24,
     ),
     buat(
       2,
@@ -58,7 +57,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       4,
       "porsi",
       "aktif",
-      8
+      8,
     ),
     buat(
       3,
@@ -71,7 +70,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       5,
       "paket",
       "aktif",
-      12
+      12,
     ),
     buat(
       4,
@@ -84,7 +83,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       3,
       "paket",
       "draft",
-      24
+      24,
     ),
     buat(
       5,
@@ -97,7 +96,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       0,
       "paket",
       "habis",
-      24
+      24,
     ),
     buat(
       6,
@@ -110,7 +109,7 @@ export function buatDataLatihan(waktu = Date.now()) {
       2,
       "paket",
       "aktif",
-      -1
+      -1,
     ),
   ];
 }
