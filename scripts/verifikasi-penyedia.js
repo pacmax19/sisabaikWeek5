@@ -33,14 +33,13 @@ export async function verifikasiPenyedia(
     await c.query("COMMIT");
     mulai = false;
     return { email: r.rows[0].email, status };
-    } catch (e) {
-    if (mulai) {
+  } catch (e) {
+    if (mulai)
       try {
         await c.query("ROLLBACK");
       } catch (gagal) {
         rusak = gagal;
       }
-    }
     throw e;
   } finally {
     c.release(rusak);
@@ -62,32 +61,28 @@ if (
         !(process.env.PGHOST ?? "").endsWith(".neon.tech") ||
         process.env.PGSSL !== "require" ||
         !tujuan
-      ) {
+      )
         throw new Error(
           "Peninjauan cloud memerlukan Neon/TLS dan CLOUD_CONFIRM_DATABASE.",
         );
-      }
     } else if (
       !["localhost", "127.0.0.1"].includes(process.env.PGHOST) ||
       process.env.PGDATABASE !== tujuan
-    ) {
+    )
       throw new Error("Peninjauan lokal hanya untuk sisabaik_dev.");
-    }
     const args = process.argv
       .slice(2)
       .filter((x) => !["--cloud", "--tolak"].includes(x));
-    if (args.length !== 1) {
+    if (args.length !== 1)
       throw new Error(
         "Gunakan: npm run penyedia:verifikasi -- email@domain.com [--tolak]",
       );
-    }
     ({ pool } = await import("../src/db/pool.js"));
     const db = await pool.query(
-      "SELECT current_database() AS nama, (SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()) AS tls",
+      "SELECT current_database() AS nama,(SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()) AS tls",
     );
-    if (db.rows[0].nama !== tujuan || (cloud && !db.rows[0].tls)) {
+    if (db.rows[0].nama !== tujuan || (cloud && !db.rows[0].tls))
       throw new Error("Database tujuan atau TLS tidak sesuai.");
-    }
     const r = await verifikasiPenyedia(
       pool,
       args[0],

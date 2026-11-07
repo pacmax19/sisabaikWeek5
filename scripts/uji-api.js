@@ -1,11 +1,10 @@
 import assert from "node:assert/strict";
-
+ 
 const base = process.argv[2] ?? "http://127.0.0.1:3000";
 const host = new URL(base).hostname;
 if (!["127.0.0.1", "localhost"].includes(host)) {
   throw new Error("Jalankan uji mutasi hanya pada server lokal latihan.");
 }
-
 const tanda = `Uji C7 ${Date.now()}`;
 async function request(method, path, payload, status) {
   const respons = await fetch(new URL(path, base), {
@@ -19,7 +18,6 @@ async function request(method, path, payload, status) {
   console.log(`PASS ${method} ${path} -> ${status}`);
   return { body, location: respons.headers.get("location") };
 }
-
 const payload = {
   penyediaId: "1",
   nama: tanda,
@@ -31,7 +29,6 @@ const payload = {
   status: "aktif",
   berakhirPada: new Date(Date.now() + 86400000).toISOString(),
 };
-
 try {
   await request("GET", "/api/health", undefined, 200);
   await request("GET", "/api/penawaran?page=0", undefined, 400);
@@ -90,7 +87,7 @@ try {
   assert.equal(injeksi.body.meta.jumlah, 0);
   await request("DELETE", path, undefined, 204);
   await request("GET", path, undefined, 404);
-
+ 
   const a = (await request("POST", "/api/penawaran", payload, 201)).body.data;
   const b = (
     await request(
