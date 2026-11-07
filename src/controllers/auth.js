@@ -7,7 +7,7 @@ import {
 import { cabutToken } from "../repositories/pengguna.js";
 
 export async function registrasi(req, res) {
-const data = await service.registrasi(registrasiValid(req.body));
+  const data = await service.registrasi(registrasiValid(req.body));
   return res.status(201).json({ success: true, data });
 }
 

@@ -14,15 +14,18 @@ export function tanganiError(error, req, res, next) {
   } else if (error.type === "entity.too.large") {
     status = 413;
     code = "PAYLOAD_TOO_LARGE";
-    message = "Payload melebihi 20 KB.";
+    message = "Payload melebihi batas endpoint. Foto input maksimal 2 MiB.";
+  } else if (error.code === "42703") {
+    status = 503;
+    code = "SCHEMA_MIGRATION_REQUIRED";
+    message =
+      "Struktur database belum sesuai. Jalankan migrasi aplikasi sebelum melanjutkan.";
   } else if (["23503", "23001"].includes(error.code)) {
     status = 409;
     code = "REFERENCE_CONFLICT";
     message = "Relasi tidak valid atau data masih dipakai riwayat pesanan.";
   } else if (
-    ["23514", "23502", "22003", "22007", "22008", "22001"].includes(
-      error.code,
-    )
+    ["23514", "23502", "22003", "22007", "22008", "22001"].includes(error.code)
   ) {
     status = 400;
     code = "DATA_CONSTRAINT";
@@ -43,7 +46,5 @@ export function tanganiError(error, req, res, next) {
     message = "Database belum tersedia.";
   }
   if (status >= 500) console.error("Server error:", error.code ?? error.name);
-  return res
-    .status(status)
-    .json({ success: false, error: { code, message } });
+  return res.status(status).json({ success: false, error: { code, message } });
 }

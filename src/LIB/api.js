@@ -1,5 +1,5 @@
 export class HttpError extends Error {
-    constructor (status, code, message) {
+  constructor(status, code, message) {
     super(message);
     this.status = status;
     this.code = code;
@@ -64,7 +64,8 @@ export function halamanValid(query) {
   const limit = baca("limit", 10, 50);
   return { page, limit, offset: (page - 1) * limit };
 }
-    export function metaHalaman(jumlah, paging) {
+
+export function metaHalaman(jumlah, paging) {
   return {
     jumlah,
     page: paging.page,
@@ -106,7 +107,12 @@ export function penawaranValid(body) {
     penyediaId: idValid(body.penyediaId, "penyediaId"),
     nama: teksValid(body.nama, "nama", 3, 120),
     kategori: teksValid(body.kategori, "kategori", 1, 40),
-    hargaNormal: angkaValid(body.hargaNormal, "hargaNormal", 1, 999999999999),
+    hargaNormal: angkaValid(
+      body.hargaNormal,
+      "hargaNormal",
+      1,
+      999999999999,
+    ),
     hargaPenawaran: angkaValid(
       body.hargaPenawaran,
       "hargaPenawaran",
@@ -126,7 +132,7 @@ export function penawaranValid(body) {
   const waktu = teksValid(body.berakhirPada, "berakhirPada", 20, 35);
   const polaWaktu = new RegExp(
     String.raw`^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}` +
-    String.raw`(\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$`,
+      String.raw`(\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$`,
   );
   if (!polaWaktu.test(waktu)) {
     salah("berakhirPada wajib ISO 8601 dengan zona waktu.");
@@ -134,7 +140,8 @@ export function penawaranValid(body) {
   const tahun = Number(waktu.slice(0, 4));
   const bulan = Number(waktu.slice(5, 7));
   const hari = Number(waktu.slice(8, 10));
-  const kabisat = tahun % 4 === 0 && (tahun % 100 !== 0 || tahun % 400 === 0);
+  const kabisat =
+    tahun % 4 === 0 && (tahun % 100 !== 0 || tahun % 400 === 0);
   const hariBulan = [
     31,
     kabisat ? 29 : 28,

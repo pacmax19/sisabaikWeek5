@@ -3,7 +3,7 @@ import { transaksi } from "../db/transaksi.js";
 
 const sql = `SELECT u.*, py.id AS penyedia_id, py.status_verifikasi,
   py.nama_usaha, py.alamat AS alamat_usaha, py.nomor_telepon AS telepon_usaha
-FROM pengguna u LEFT JOIN penyedia py ON py.pengguna_id=u.id`;
+  FROM pengguna u LEFT JOIN penyedia py ON py.pengguna_id=u.id`;
 
 export async function cariEmail(email) {
   const r = await pool.query(`${sql} WHERE u.email=$1`, [email]);
@@ -48,7 +48,7 @@ export async function cabutToken(id) {
 export async function buatPenyedia(data, hash) {
   return transaksi(async (client) => {
     const u = await client.query(
-      `INSERT INTO pengguna (nama_lengkap, email, peran, kata_sandi_hash)
+      `INSERT INTO pengguna (nama_lengkap,email,peran,kata_sandi_hash)
        VALUES ($1,$2,'penyedia',$3) RETURNING id`,
       [data.namaLengkap, data.email, hash],
     );
