@@ -6,6 +6,7 @@ export class HttpError extends Error {
   }
 }
 
+
 export const salah = (pesan) => {
   throw new HttpError(400, "VALIDATION_ERROR", pesan);
 };
